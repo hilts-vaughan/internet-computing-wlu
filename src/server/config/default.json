@@ -4,7 +4,8 @@
     "username": "root",
     "password": ""
   },
-  "pool": {
-    "slave_type": "python"
+  "workers": {
+    "host": "localhost",
+    "port": 4242
   }
 }
