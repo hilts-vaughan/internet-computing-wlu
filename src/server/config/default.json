@@ -1,0 +1,10 @@
+{
+  "db": {
+    "host": "localhost",
+    "username": "root",
+    "password": ""
+  },
+  "pool": {
+    "slave_type": "python"
+  }
+}

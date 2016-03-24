@@ -5,9 +5,11 @@
   "main": "app.js",
   "dependencies": {
     "chai": "^3.5.0",
+    "config": "^1.19.0",
     "lodash": "^4.6.1",
     "mocha": "^2.4.5",
     "mysql": "^2.10.2",
+    "path": "^0.12.7",
     "restify": "*"
   },
   "devDependencies": {},
