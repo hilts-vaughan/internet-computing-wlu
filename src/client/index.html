@@ -1,33 +1,67 @@
 <html>
   <head>
-    <title>Angular 2 QuickStart</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>Electric Boogaloo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="node_modules/materialize-css/bin/materialize.css">
+
+
+    <style>
+      .full-height {
+        padding: 30px 30px 30px 30px;
+        height: 100%;
+      }
+      .brand-logo {
+        width: 120px;
+      }
+
+      .nav-wrapper {
+        padding: 0 30px;
+        border-bottom: 1px solid gray;
+      }
+
+      .content-wrapper {
+        margin-top: 10px;
+      }
+
+    </style>
+
     <!-- 1. Load libraries -->
     <!-- IE required polyfills, in this exact order -->
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/materialize-css/bin/materialize.js"></script>
     <script src="node_modules/es6-shim/es6-shim.min.js"></script>
     <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
-    <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>   
+    <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>
     <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
     <script src="node_modules/rxjs/bundles/Rx.js"></script>
     <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
+
+
     <!-- 2. Configure SystemJS -->
     <script>
       System.config({
-        packages: {        
-          app: {
+        packages: {
+          js: {
             format: 'register',
             defaultExtension: 'js'
           }
         }
       });
-      System.import('app/main')
+      System.import('js/main')
             .then(null, console.error.bind(console));
     </script>
   </head>
   <!-- 3. Display the application -->
-  <body>
+  <body style="overflow-y: hidden; ">
+    <nav class="grey darken-3">
+        <div class="nav-wrapper">
+          <b>Electric Boogaloo</b>
+          <a class="waves-effect waves-light btn right">Login</a>
+        </div>
+      </nav>
+
     <my-app>Loading...</my-app>
   </body>
 </html>
