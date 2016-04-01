@@ -32,3 +32,6 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# Other related git ignore
+.DS_Store
