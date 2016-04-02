@@ -37,6 +37,7 @@ export class Map {
   ngOnChanges(changes: {[propName: string]: any}) {
      if(changes['routeReceipt']) {
        if(this.routeReceipt != null) {
+         this._googleMap.cleanRoute()
          var start = this.routeReceipt.first
          var end = this.routeReceipt.last
 
@@ -56,11 +57,27 @@ export class Map {
             this._googleMap.addMarker({
               lat: waypoint.lat,
               lng: waypoint.long,
+              icon: 'img/marker.png',
               title: 'Charging Station'
             });
           })
+
+          // Special start and end
+          var x = [start, end].forEach((point) => {
+            this._googleMap.addMarker({
+              lat: point.lat,
+              lng: point.long,
+              title: 'Location'
+            });            
+          })
+
           // Center the map on where we're going
           this._googleMap.setCenter(start.lat, start.long)
+          var results = []
+          this.routeReceipt.all.forEach((point) => {
+            results.push(new window['google'].maps.LatLng(point.lat, point.long))
+          })
+          this._googleMap.fitLatLngBounds(results)
        }
      }
    }

@@ -18,4 +18,8 @@ export class RouteReceipt {
     return this._points[this._points.length - 1]
   }
 
+  get all() : Array<Point> {
+    return this._points
+  }
+
 }
