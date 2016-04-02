@@ -1,39 +1,40 @@
+/**
+ * This file is the main component which houses our two basic views on a high
+ * level for getting things done. This will house mostly the InfoComponent
+ * and the actual MapComponent for ourselves.
+ */
+
 import {Component} from 'angular2/core';
+import {Map} from './components/MapComponent'
+import {Pane} from './components/RoutePaneComponent';
 
 @Component({
     selector: 'my-app',
+    directives: [Map, Pane],
+    styles: [`
+      .sebm-google-map-container {
+        height: 100%;
+      }
+    `],
     template: `
     <!-- Page Layout here -->
     <div class="row">
-
       <div class="full-height col s12 m3 l2 grey darken-3">
-        <div class="content-wrapper">
-          <h4>Plan Route</h4>
-          <form>
-          <div class="row">
-             <form class="col s12">
-               <div class="row">
-                 <div class="input-field col s12">
-                   <input id="src" type="text">
-                   <label for="src">Start</label>
-                 </div>
-                 <div class="input-field col s12">
-                   <input id="dest" type="text">
-                   <label for="dest">Destination</label>
-                 </div>
-               </div>
-             </form>
-             <a class="waves-effect waves-light btn center-align">Search</a>             
-           </div>
-
-          </form>
-        </div>
+      <pane>
+      </pane>
       </div>
-
       <div class="full-height col s12 m8 l10 grey darken-4">
+        <map>
+        </map>
       </div>
-
     </div>
     `
 })
-export class AppComponent { }
+
+export class AppComponent {
+  lat: number = 51.678418;
+  lng: number = 7.809007;
+
+  constructor() {
+  }
+}
