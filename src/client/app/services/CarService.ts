@@ -1,7 +1,8 @@
 import {Inject} from 'angular2/core';
 import {ServiceConfig} from './ServiceConfig';
-import {Http, HTTP_BINDINGS} from 'angular2/http';
+import {Http, HTTP_BINDINGS, Headers} from 'angular2/http';
 import {Car} from '../models/Car'
+import {Model} from '../models/Model'
 
 export class CarService {
   constructor(@Inject(Http) public http : Http) {
@@ -19,6 +20,23 @@ export class CarService {
         var collection = []
         data.cars.forEach((car) => {
           collection.push(new Car(car.id, car.name))
+        })
+        callback(collection)
+      },
+      error => callback(null)
+    )
+  }
+
+  fetchAllCarModelsForCar(car : Car, callback : Function) {
+    var params = JSON.stringify({id: car.id})
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    this.http.post(ServiceConfig.SERVER_URL + "/cars/model", "", {headers: headers, body: params}).map(res => res.json()).subscribe(
+      data => {
+        var collection = []
+        data.models.forEach((model) => {
+          collection.push(new Model(model.id, model.name, model.year))
         })
         callback(collection)
       },

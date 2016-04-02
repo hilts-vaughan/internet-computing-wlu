@@ -20,7 +20,7 @@ import {Model} from '../models/Model'
            <div class="row">
              <places-input labelText="Start" (placeChanged)="newPlace(value)" ></places-input>
              <places-input labelText="Destination" (placeChanged)="newPlace(value)" ></places-input>
-            <dropdown [collection]="carCollection" labelText="Car Make" (optionSelected)="selected($event)"></dropdown>
+            <dropdown [collection]="carCollection" labelText="Car Make" (optionSelected)="makeSelected($event)"></dropdown>
             <dropdown [collection]="modelCollection" labelText="Car Model" (optionSelected)="selected($event)"></dropdown>
            </div>
          </form>
@@ -39,10 +39,20 @@ export class Pane {
   carCollection : Array<Car> = []
   modelCollection : Array<Model> = []
 
-  constructor(carService : CarService) {
+  constructor(public carService : CarService) {
     // Fetch the cars
     carService.fetchAllCars((cars) => {
       this.carCollection = cars
+    })
+  }
+
+  makeSelected(index) {
+    var carMake : Car = this.carCollection[index]
+
+    // Now, populate the make service with the new items
+    this.carService.fetchAllCarModelsForCar(carMake, (models) => {
+      this.modelCollection = models
+      console.log(this.modelCollection)
     })
   }
 
@@ -54,13 +64,6 @@ export class Pane {
 
   beginSearch() {
     console.log(this.searchRequest)
-  }
-
-  newPlace(value) {
-  }
-
-  selected(index) {
-    console.log('Index for car was selected: ')
   }
 
 }

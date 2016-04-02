@@ -17,7 +17,7 @@ class CarRepository {
    * @param  {Number} id The numeric ID that is given to the car that you want to fetch.
    * @return {[type]}    [description]
    */
-  getModelsForCarId(id, callback) {
+  getModelsForCarId(id, callback) {  
     this.connection.query("SELECT m.model_id, m.name, m.range_km, m.year FROM model AS m WHERE car_id =?", [id], (error, rows) => {
       callback(rows)
     })

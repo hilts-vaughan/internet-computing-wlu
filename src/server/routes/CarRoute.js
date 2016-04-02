@@ -33,7 +33,7 @@ class CarRoute {
       })
     })
 
-    this.server.post('/cars/model', (request, resource, next) => {
+    this.server.post('/cars/model', (request, resource, next) => {      
       this.carRepo.getModelsForCarId(request.body.id, (models) => {
           if(models != null) {
             resource.send({models: models})
