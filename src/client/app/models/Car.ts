@@ -1,9 +1,9 @@
 export class Car {
-  private _id : number;
-  private _name : string;
+  private _id : number
+  private _name : string
   constructor(id : number, name : string) {
-    this._id = id;
-    this._name = name;
+    this._id = id
+    this._name = name
   }
 
   /**
@@ -19,10 +19,10 @@ export class Car {
    * @return {string}
    */
   get name() : string {
-    return this._name;
+    return this._name
   }
 
-  toString() {
+  toString() : string {
     return this._name
   }
 

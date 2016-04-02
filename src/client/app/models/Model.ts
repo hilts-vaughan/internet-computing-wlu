@@ -25,4 +25,7 @@ export class Model {
     return this._name;
   }
 
+  toString() {
+    return this._name + " (" + this._year + ")"
+  }
 }
