@@ -1,11 +1,17 @@
 'use strict'
 
-var ChargerType = require('ChargerType')
+var ChargerType = require('./ChargerType')
 
 class Car {
   constructor(attributes) {
     // Copy attributes into itself where needed... TODO since this is dangerous
     Object.assign(this, attributes)
+
+    // TODO: Maybe do something else with the tuples, as well?
+  }
+
+  getId() {
+    return this.id
   }
 
   getName() {

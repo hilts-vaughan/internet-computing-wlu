@@ -1,7 +1,6 @@
 /**
- * This is the main application entry point. 
+ * This is the main application entry point.
  */
-
 
 // All general server API imports
 var restify = require('restify');
@@ -22,8 +21,12 @@ server
 
 // Setup all the routes using a recursive directory read and requiring all the routes; causing their callbacks to be triggered
 var normalizedPath = path.join(__dirname, "routes");
-require("fs").readdirSync(normalizedPath).forEach(function(file) {
-  require("./routes/" + file)(server);
+console.log("Attempting to register all routes...")
+require("fs").readdirSync(normalizedPath).forEach((file) => {
+  var pathToRegister = "./routes/" + file
+  console.log(" Registering route file: " + file)
+  var c = require(pathToRegister);
+  var route = new c(server)
 });
 
 // Finally, begin listening... app OK to start!

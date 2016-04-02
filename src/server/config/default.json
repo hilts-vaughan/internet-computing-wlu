@@ -2,7 +2,8 @@
   "db": {
     "host": "localhost",
     "username": "root",
-    "password": ""
+    "password": "",
+    "database": "electric_car"
   },
   "workers": {
     "host": "localhost",

@@ -10,7 +10,8 @@ var dbConfig = config.get('db')
 var pool  = mysql.createPool({
   host     : dbConfig.host,
   user     : dbConfig.username,
-  password : dbConfig.password
+  password : dbConfig.password,
+  database:  dbConfig.database
 });
 
 // Exports the pool to ourselves

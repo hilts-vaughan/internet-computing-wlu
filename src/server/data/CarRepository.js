@@ -1,6 +1,6 @@
 'use strict'
 
-Car = require('../model/Car')
+var Car = require('../model/Car')
 
 /**
  * Represents a unit of work for electric cars to be loaded.
@@ -23,6 +23,25 @@ class CarRepository {
         callback(new Car(rows[0]))
     })
   }
+
+  getAllCars(callback) {    
+    this.connection.query("SELECT * FROM cars AS c INNER JOIN charger AS a ON a.CarId = c.CarId", (error, rows) => {
+      if(error) {
+        callback(null)
+        return
+      }
+      callback(_rowsToCollection(rows))
+    })
+  }
+
+  _rowsToCollection(rows) {
+    var results = []
+    rows.forEach((row) => {
+        results.push(new Car(row))
+    })
+    return results
+  }
+
 }
 
 module.exports = CarRepository
