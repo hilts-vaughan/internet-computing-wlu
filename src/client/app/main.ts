@@ -3,4 +3,7 @@ import {HTTP_BINDINGS} from 'angular2/http';
 import {AppComponent} from './app.component';
 import 'rxjs/Rx'
 
-bootstrap(AppComponent, [HTTP_BINDINGS]);
+// Common bootstraps for many things
+import {NgFor, NgIf} from 'angular2/common'
+
+bootstrap(AppComponent, [HTTP_BINDINGS,]);

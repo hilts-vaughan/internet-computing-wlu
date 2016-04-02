@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="node_modules/materialize-css/bin/materialize.css">
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
       .full-height {
@@ -13,6 +13,8 @@
       }
       .brand-logo {
         width: 120px;
+        margin-left: 20px;
+        margin-top: 3px;
       }
 
       .nav-wrapper {
@@ -54,7 +56,7 @@
 
 
     <!-- Load 3rd party vendor scripts -->
-    <script src="http://maps.google.com/maps/api/js"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
     <script src="lib/gmaps.js"></script>
 
     <!-- 2. Configure SystemJS -->
@@ -75,8 +77,9 @@
   <body style="overflow-y: hidden; ">
     <nav class="grey darken-3">
         <div class="nav-wrapper">
-          <b>Electric Boogaloo</b>
-          <a href="https://github.com/hilts-vaughan/internet-computing-wlu" class="icon-github right"></a>
+          <img style="width: 75px; margin-top: 5px;" src="img/logo.png" />
+          <b class="brand-logo">Electric Boogaloo</b>
+          <a href="https://github.com/hilts-vaughan/internet-computing-wlu" target="_blank" class="icon-github right"></a>
         </div>
       </nav>
 
@@ -84,8 +87,8 @@
       <!-- This content is the loading content -->
 
       <div class="row">
-        <div class="full-height col s12 m12 l12 grey darken-4">
-          <div class="" style="margin: 0 auto; width: 100%;">
+        <div class="valign-wrapper full-height col s12 m12 l12 grey darken-4">
+          <div class="center valign" style="margin: 0px auto; width: 100%; zoom: 4;">
             <h5>Loading...</h5>
             <div class="preloader-wrapper big active">
               <div class="spinner-layer spinner-blue">

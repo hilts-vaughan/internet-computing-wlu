@@ -5,10 +5,9 @@ import json
 
 def googleMapsActualPath(positionList,path):
     actualDistances = []
-    if None not in path:
+    if None not in path and len(path)>2:
         pathIndex = 1
-        print(positionList[int(path[pathIndex])+1])
-        #print(str(positionList[path[pathIndex]][0]))
+
         url="https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" +str(positionList[0][0])+","+str(positionList[0][1])+"&destinations="+str(positionList[int(path[pathIndex])+1][0])+"%2C"+str(positionList[int(path[pathIndex])+1][1])+"&key=AIzaSyB-hn6btafEpxn9e74C9Djkv7fzLwzpYh4"
         print(url)
         r = requests.get(url,None)
@@ -25,9 +24,17 @@ def googleMapsActualPath(positionList,path):
         r = requests.get(url,None)
         data = json.loads(r.text)
         actualDistances.append(data['rows'][0]['elements'][0]['distance']['value'])
-        print(actualDistances)
+    elif len(path)==2:
+        url="https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" +str(positionList[0][0])+","+str(positionList[0][1])+"&destinations="+str(positionList[1][0])+"%2C"+str(positionList[1][1])+"&key=AIzaSyB-hn6btafEpxn9e74C9Djkv7fzLwzpYh4"
+        print(url)
+        r = requests.get(url,None)
+        data = json.loads(r.text)
+        actualDistances.append(data['rows'][0]['elements'][0]['distance']['value'])
+
     return actualDistances
 
+
+'''
 gmaps = googlemaps.Client(key='AIzaSyDMLDGm1PV9AwhvbosGsbbbdFuAARfrFdw')#key
 path = ['start', '14', '19', '26', '48', 'end']
 positionList = [[39.5,-121.9, 'start'], [40, -121, 'end'], [39.71309, -121.82189, '1'], [39.717216, -121.801107, '2'], [39.7250338, -121.8349704, '3'], [39.7242546, -121.8138504, '4'], [39.6501238, -121.6419902, '5'], [39.756748, -121.843727, '6'], [39.7568, -121.8435, '7'], [39.7568, -121.8435, '8'], [39.7623499, -121.8431691, '9'], [39.7966490183476, -121.901470242328, '10'], [39.74894, -122.20109, '11'], [39.7491697282118, -122.200927734375, '12'], [39.1576393, -122.1407662, '13'], [39.1438773, -121.5855347, '14'], [39.109224, -121.564727, '15'], [39.930695, -122.1712264, '16'], [39.92646, -122.1984, '17'], [39.9285765, -122.1972265, '18'], [39.2357835, -121.046444, '19'], [40.181665, -122.2205198, '20'], [38.8689749, -121.276218, '21'], [38.84069, -121.31232, '22'], [38.686897, -121.786232, '23'], [38.683943, -121.79905, '24'], [38.6783, -121.7727, '25'], [39.559574, -120.8281375, '26'], [38.678131, -121.7534326, '27'], [38.676196, -121.766289, '28'], [38.9412492, -121.1054805, '29'], [38.669819, -121.794558, '30'], [39.099117, -120.9532, '31'], [38.9507461, -121.0866284, '32'], [38.7962852, -121.316827, '33'], [38.814426, -121.2798033, '34'], [38.671075, -121.739798, '35'], [38.67068, -121.7269, '36'], [39.084259, -120.956, '37'], [38.668736, -121.7287, '38'], [38.668736, -121.728678, '39'], [38.668736, -121.728678, '40'], [38.93477, -121.0922, '41'], [38.6919, -121.58904, '42'], [38.69005, -121.58889, '43'], [38.658128, -121.794707, '44'], [38.930796, -121.092196, '45'], [38.93087, -121.09192, '46'], [39.1654, -122.9106, '47'], [39.936646, -120.912751, '48'], [39.9369873116008, -120.911922454833, '49'], [39.559574, -120.8281375, '50'], [39.6501238, -121.6419902, '51'], [39.717216, -121.801107, '52'], [39.7242546, -121.8138504, '53'], [39.7623499, -121.8431691, '54'], [39.7568, -121.8435, '55'], [39.7568, -121.8435, '56'], [39.756748, -121.843727, '57'], [39.71309, -121.82189, '58'], [39.7250338, -121.8349704, '59'], [39.7966490183476, -121.901470242328, '60'], [39.2357835, -121.046444, '61'], [39.30958, -120.54433, '62'], [40.5114173877131, -121.81215763092, '63']]
@@ -35,7 +42,7 @@ myDictionary = {'39': {'22': 40.8671136350856, '24': 6.340592156973851, '30': 5.
 distance = googleMapsActualPath(positionList,path)
 
 
-
+'''
 
 
 

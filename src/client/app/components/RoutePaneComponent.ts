@@ -1,52 +1,61 @@
 import {Component} from 'angular2/core';
+import {RouteRequest} from '../models/RouteRequest'
+import {MaterialPlacesAutocomplete} from './MaterialPlacesAutocomplete';
+import {DropdownComponent} from './DropdownComponent';
+import {CarService} from '../services/CarService';
 
 @Component({
   selector: 'pane',
+  directives: [MaterialPlacesAutocomplete, DropdownComponent],
+  providers: [CarService],
   template: `
     <div id="info-pane">
-    <div class="content-wrapper">
-      <h4>Plan Route</h4>
+    <div class="content-wrapper center-align">
+      <h4 style="center">Plan Route</h4>
       <form>
-      <div class="row">
+      <div class="row center-align">
          <form class="col s12">
            <div class="row">
-             <div class="input-field col s12">
-               <input id="src" type="text">
-               <label for="src">Start</label>
-             </div>
-             <div class="input-field col s12">
-               <input id="dest" type="text">
-               <label for="dest">Destination</label>
-             </div>
-
-             <div class="input-field col s12">
-               <select>
-                 <option value="1">Vroom</option>
-                 <option value="2">Vroom Vroom</option>
-                 <option value="3">Vroom Vroom Vroom</option>
-               </select>
-               <label>Car Model</label>
-             </div>
-
-           </div>
+             <places-input labelText="Start" (placeChanged)="newPlace(value)" ></places-input>
+             <places-input labelText="Destination" (placeChanged)="newPlace(value)" ></places-input>
+            <dropdown [collection]="carNames" labelText="Car Make" (optionSelected)="selected($event)"></dropdown>
+            <dropdown [collection]="carModels" labelText="Car Model" (optionSelected)="selected($event)"></dropdown>
+           </div>           
          </form>
-         <a class="waves-effect waves-light btn center-align">Search</a>
+         <a (click)="beginSearch()" class="waves-effect waves-light btn center">Search</a>
        </div>
       </form>
     </div>
     </div>
+
   `
 })
 
 export class Pane {
-  constructor() {
 
+  searchRequest : RouteRequest = new RouteRequest();
+  carNames = ["Audi", "Tesla", "Geo Suck", 'Miata', 'Nissan', 'Noob']
+  carModels = ["S", "Volt", "X", "Model S"]
+
+  constructor(carService : CarService) {
   }
 
   // ngAfterContentInit is used to initialize the component inside
   // for the fancy selections
   ngAfterContentInit() {
     window['$']('select').material_select();
+    window['$']('.collapsible').collapsible();
+  }
+
+  beginSearch() {
+    console.log(this.searchRequest)
+  }
+
+  newPlace(value) {
+  }
+
+  selected(index) {
+    console.log('Index for car was selected: ')
   }
 
 }
