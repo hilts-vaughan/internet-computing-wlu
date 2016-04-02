@@ -1,4 +1,5 @@
 import {Component} from 'angular2/core';
+import {RouteRequest} from '../models/RouteRequest'
 
 @Component({
   selector: 'pane',
@@ -11,11 +12,11 @@ import {Component} from 'angular2/core';
          <form class="col s12">
            <div class="row">
              <div class="input-field col s12">
-               <input id="src" type="text">
+               <input id="src" type="text" [(ngModel)]="searchRequest.startingLocation">
                <label for="src">Start</label>
              </div>
              <div class="input-field col s12">
-               <input id="dest" type="text">
+               <input id="dest" type="text" [(ngModel)]="searchRequest.endingLocation">
                <label for="dest">Destination</label>
              </div>
 
@@ -30,7 +31,7 @@ import {Component} from 'angular2/core';
 
            </div>
          </form>
-         <a class="waves-effect waves-light btn center-align">Search</a>
+         <a (click)="beginSearch()" class="waves-effect waves-light btn center-align">Search</a>
        </div>
       </form>
     </div>
@@ -39,6 +40,9 @@ import {Component} from 'angular2/core';
 })
 
 export class Pane {
+
+  searchRequest : RouteRequest = new RouteRequest();
+
   constructor() {
 
   }
@@ -46,7 +50,11 @@ export class Pane {
   // ngAfterContentInit is used to initialize the component inside
   // for the fancy selections
   ngAfterContentInit() {
-    window['$']('select').material_select();
+    // window['$']('select').material_select();
+  }
+
+  beginSearch() {
+    console.log(this.searchRequest)    
   }
 
 }

@@ -11,11 +11,6 @@ import {Pane} from './components/RoutePaneComponent';
 @Component({
     selector: 'my-app',
     directives: [Map, Pane],
-    styles: [`
-      .sebm-google-map-container {
-        height: 100%;
-      }
-    `],
     template: `
     <!-- Page Layout here -->
     <div class="row">
