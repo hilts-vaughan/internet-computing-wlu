@@ -11,6 +11,7 @@ import {Pane} from './components/RoutePaneComponent';
 @Component({
     selector: 'my-app',
     directives: [Map, Pane],
+    providers: [],
     template: `
     <!-- Page Layout here -->
     <div class="row">
@@ -31,5 +32,6 @@ export class AppComponent {
   lng: number = 7.809007;
 
   constructor() {
+
   }
 }
