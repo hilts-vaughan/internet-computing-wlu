@@ -6,6 +6,14 @@
    width: 100% !important;
  }
 
+#info-pane {
+  border-bottom: 1px dotted lightgray;
+}
+
+.collection {
+  font-size: 10px;
+}
+
 /* Master Styles */
 h1 {
   color: #369;

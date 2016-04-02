@@ -67,7 +67,7 @@ export class Pane {
 
   placeChanged(place) {
     this.googleService.getPointFromAddressString(place, (point) => {
-      this.searchRequest.startingLocation = point      
+      this.searchRequest.startingLocation = point
     })
   }
 

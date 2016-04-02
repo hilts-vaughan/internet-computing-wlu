@@ -20,11 +20,11 @@ import {Point} from './models/Point'
     template: `
     <!-- Page Layout here -->
     <div class="row">
-      <div class="full-height col s12 m3 l2 grey darken-3">
+      <div class="full-height col s12 m5 l3 grey darken-3">
         <pane (searchInvoked)="beginSearch($event)"></pane>
         <route-results></route-results>
       </div>
-      <div class="full-height col s12 m8 l10 grey darken-4">
+      <div class="full-height col s12 m7 l9 grey darken-4">
         <map [routeReceipt]="_receipt">
         </map>
       </div>
