@@ -10,22 +10,24 @@ import {CarService} from '../services/CarService';
   providers: [CarService],
   template: `
     <div id="info-pane">
-    <div class="content-wrapper">
-      <h4>Plan Route</h4>
+    <div class="content-wrapper center-align">
+      <h4 style="center">Plan Route</h4>
       <form>
-      <div class="row">
+      <div class="row center-align">
          <form class="col s12">
            <div class="row">
              <places-input labelText="Start" (placeChanged)="newPlace(value)" ></places-input>
              <places-input labelText="Destination" (placeChanged)="newPlace(value)" ></places-input>
-             <dropdown [collection]="carNames" labelText="Car Make" (optionSelected)="selected($event)"></dropdown>
+            <dropdown [collection]="carNames" labelText="Car Make" (optionSelected)="selected($event)"></dropdown>
+            <dropdown [collection]="carModels" labelText="Car Model" (optionSelected)="selected($event)"></dropdown>
            </div>
          </form>
-         <a (click)="beginSearch()" class="waves-effect waves-light btn center-align">Search</a>
+         <a (click)="beginSearch()" class="material-icons waves-effect waves-light btn center">Search</a>
        </div>
       </form>
     </div>
     </div>
+
   `
 })
 
@@ -33,6 +35,7 @@ export class Pane {
 
   searchRequest : RouteRequest = new RouteRequest();
   carNames = ["Audi", "Tesla", "Geo Suck", 'Miata', 'Nissan', 'Noob']
+  carModels = ["S", "Volt", "X", "Model S"]
 
   constructor(carService : CarService) {
   }
