@@ -20,9 +20,9 @@ import {CarService} from '../services/CarService';
              <places-input labelText="Destination" (placeChanged)="newPlace(value)" ></places-input>
             <dropdown [collection]="carNames" labelText="Car Make" (optionSelected)="selected($event)"></dropdown>
             <dropdown [collection]="carModels" labelText="Car Model" (optionSelected)="selected($event)"></dropdown>
-           </div>
+           </div>           
          </form>
-         <a (click)="beginSearch()" class="material-icons waves-effect waves-light btn center">Search</a>
+         <a (click)="beginSearch()" class="waves-effect waves-light btn center">Search</a>
        </div>
       </form>
     </div>
@@ -44,6 +44,7 @@ export class Pane {
   // for the fancy selections
   ngAfterContentInit() {
     window['$']('select').material_select();
+    window['$']('.collapsible').collapsible();
   }
 
   beginSearch() {
