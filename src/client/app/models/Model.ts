@@ -1,16 +1,10 @@
 export class Model {
   private _id : number;
   private _name : string;
-  private _carid: number;
-  private _year : number;
-  private _range : number;
 
-  constructor(id : number, name : string, carid : number, year : number, range : number) {
+  constructor(id : number, name : string) {
     this._id = id;
     this._name = name;
-    this._carid = carid;
-    this._year = year;
-    this._range = range;
   }
 
   /**
