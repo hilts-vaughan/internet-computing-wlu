@@ -49,27 +49,18 @@ def jsonFetch(distance, midLat, midLong):
 
 
 def jsonParsingIntoRequestList(requestList, data, startindex, suppportedChargers):
-
-    count = 0
     x=startindex
     for point in data:
 
-        '''
-        #simplistic working version
-        lat = point['AddressInfo']['Latitude']
-        long = point['AddressInfo']['Longitude']
-        tempAddress = point['AddressInfo']['AddressLine1']
-        temp = [lat, long, tempAddress]
-        if (temp not in requestList):
-            requestList.append([lat, long, str(x)])
-            x=x+1
-        '''
         chargerList = []
         chargerIDList = []
         lat = point['AddressInfo']['Latitude']
         long = point['AddressInfo']['Longitude']
-        tempAddress = point['AddressInfo']['AddressLine1']
-        temp = [lat, long, tempAddress]
+
+        addressLine = point['AddressInfo']['AddressLine1']
+        addressTitle = point['AddressInfo']['Title']
+        addressDetails = [lat, long, addressLine, addressTitle]
+
 
         for chargerType in point['Connections']:
             if (chargerType['Level']!=None and 'ID' in chargerType['Level']):
@@ -79,18 +70,14 @@ def jsonParsingIntoRequestList(requestList, data, startindex, suppportedChargers
             if (chargerType['ConnectionType']!=None and 'ID' in chargerType['ConnectionType']):
                 chargerIDList.append(str(chargerType['ConnectionType']['ID']))
 
-        if (temp not in requestList and (1 in chargerList or 2 in chargerList or None in chargerList)):
-            if None in chargerList:
-                count+=1
-                print("So far {}:".format(count))
-                print(chargerType)
-            requestList.append([lat, long, str(x)])
+        if (addressDetails not in requestList and (1 in chargerList or 2 in chargerList or None in chargerList)):
+            requestList.append([lat, long, str(x),addressLine,addressTitle])
             x=x+1
 
         elif ((3 in chargerList)):
             found=checkValidThree(chargerIDList,suppportedChargers)
             if found:
-                requestList.append([lat, long, str(x)])
+                requestList.append([lat, long, str(x),addressLine,addressTitle])
 
     return x, requestList
 
@@ -163,12 +150,12 @@ def main(startLatitude, startLongitude, endLatitude, endLongitude, maxDistance, 
     if shortestPath==None:
         return None
     waypoints = []
-    waypoints.append([requestList[0][0],requestList[0][1]])
+    waypoints.append([requestList[0][0],requestList[0][1],None,None])
     for point in shortestPath:
         if point != "start" and point != "end":
-            waypoints.append([requestList[int(point)+1][0],requestList[int(point)+1][1]])
+            waypoints.append([requestList[int(point)+1][0],requestList[int(point)+1][1],requestList[int(point)+1][3],requestList[int(point)+1][4]])
             print(requestList[int(point)+1])
-    waypoints.append([requestList[1][0],requestList[1][1]])
+    waypoints.append([requestList[1][0],requestList[1][1],None,None])
     print(waypoints)
     return waypoints
 #current Inputs
@@ -177,6 +164,6 @@ startLongitude = -121.9
 endLatitude = 40
 endLongitude = -121
 maxDistance = 100
-supportedChargers = ['27']
+supportedChargers = []
 waypoints = main(startLatitude,startLongitude,endLatitude,endLongitude,maxDistance,supportedChargers)
 #https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=longtitude,latitude&destinations=40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626%7C40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626&key=YOUR_API_KEY
