@@ -1,8 +1,10 @@
 import {Component} from 'angular2/core';
 import {RouteRequest} from '../models/RouteRequest'
+import {MaterialPlacesAutocomplete} from './MaterialPlacesAutocomplete';
 
 @Component({
   selector: 'pane',
+  directives: [MaterialPlacesAutocomplete],
   template: `
     <div id="info-pane">
     <div class="content-wrapper">
@@ -11,14 +13,8 @@ import {RouteRequest} from '../models/RouteRequest'
       <div class="row">
          <form class="col s12">
            <div class="row">
-             <div class="input-field col s12">
-               <input id="src" type="text" [(ngModel)]="searchRequest.startingLocation">
-               <label for="src">Start</label>
-             </div>
-             <div class="input-field col s12">
-               <input id="dest" type="text" [(ngModel)]="searchRequest.endingLocation">
-               <label for="dest">Destination</label>
-             </div>
+             <places-input labelText="Start" (placeChanged)="newPlace(value)" ></places-input>
+             <places-input labelText="Destination" (placeChanged)="newPlace(value)" ></places-input>
 
              <div class="input-field col s12">
                <select>
@@ -54,7 +50,10 @@ export class Pane {
   }
 
   beginSearch() {
-    console.log(this.searchRequest)    
+    console.log(this.searchRequest)
+  }
+
+  newPlace(value) {
   }
 
 }
