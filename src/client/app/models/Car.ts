@@ -7,13 +7,17 @@ export class Car {
   }
 
   /**
-   * Returns the name of this car
-   * @return {String} [description]
+   * returns the id of the car
+   * @return {number}
    */
   get id() : number {
     return this._id
   }
 
+  /**
+   * returns the name of the car
+   * @return {string}
+   */
   get name() : string {
     return this._name;
   }
