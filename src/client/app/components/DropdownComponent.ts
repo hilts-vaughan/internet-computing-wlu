@@ -46,14 +46,14 @@ export class DropdownComponent {
     // will have been updated in time for the list to be changed
     window.setTimeout(() => {
       element.material_select()
+      window['$'](rawElement).find("span").click((event : any) => {
+        var index : number = window['$'](event.target).parent().index()
+        if(index > 0) {
+          this.optionSelected.emit(index - 1 ) // don't keep the default option
+        }
+      })            
     }, 500)
 
-    window['$'](rawElement).find("span").click((event : any) => {
-      var index : number = window['$'](event.target).parent().index()
-      if(index > 0) {
-        this.optionSelected.emit(index - 1 ) // don't keep the default option
-      }
-    })
   }
 
   // TODO:   $('select').material_select('destroy'); on component wrecked
