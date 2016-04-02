@@ -6,4 +6,4 @@ import 'rxjs/Rx'
 // Common bootstraps for many things
 import {NgFor, NgIf} from 'angular2/common'
 
-bootstrap(AppComponent, [HTTP_BINDINGS]);
+bootstrap(AppComponent, [HTTP_BINDINGS,]);
