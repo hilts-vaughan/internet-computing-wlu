@@ -36,12 +36,16 @@ export class CarService {
       data => {
         var collection = []
         data.models.forEach((model) => {
-          collection.push(new Model(model.id, model.name, model.year))
+          collection.push(new Model(model.model_id, model.name, model.year))
         })
         callback(collection)
       },
       error => callback(null)
     )
+  }
+
+  getConnectionsForModel(model : Model, callback : Function) {
+    
   }
 
 }

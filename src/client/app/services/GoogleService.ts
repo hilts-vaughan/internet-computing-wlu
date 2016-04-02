@@ -18,13 +18,15 @@ export class GoogleService {
   getPointFromAddressString(address : string, callback : Function)  {
     var GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeURIComponent(address) +  "+CA&key=" + ServiceConfig.API_KEY
     this.http.get(GEOCODE_URL).map(res => res.json()).subscribe(
-      error => callback(error),
-      data => callback(data)
+      data => {
+        var point = data.results[0].geometry.location
+        callback(new Point(point.lng, point.lat))
+      }
     )
   }
 
   // This may require implementing to get everything down to spec
-  _scrubPointFromGeometry() {
+  private _scrubPointFromGeometry() {
 
   }
 

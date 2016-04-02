@@ -2,9 +2,11 @@
  * Houses a map component.
  */
 
-import {Component} from 'angular2/core';
+import {Component, Input, Output} from 'angular2/core';
 import {Http, HTTP_BINDINGS} from 'angular2/http';
-// import {LocationService} from './../services/LocationService'
+
+import {RouteReceipt} from '../models/RouteReceipt'
+import {Point} from '../models/Point'
 
 @Component({
   selector: 'map',
@@ -24,16 +26,56 @@ export class Map {
   private _googleMap : any
   private _httpService : Http
 
-  // Tracks whether or not the map finished loading initially
-  private _isFinishedLoading : boolean = false
+  // This is used for
+  @Input() routeReceipt : RouteReceipt = null
+
 
   constructor(http: Http) {
     this._httpService = http
   }
 
-  setLocationOnMap(position) {
-    // this._googleMap.setCenter(position.latitude, position.longitude);
-  }
+  ngOnChanges(changes: {[propName: string]: any}) {
+     if(changes['routeReceipt']) {
+       if(this.routeReceipt != null) {
+         var start = this.routeReceipt.first
+         var end = this.routeReceipt.last
+
+         var options = {
+            origin: [start.lat, start.long],
+            destination: [end.lat, end.long],
+            waypoints: this._toWaypoints(this.routeReceipt.waypoints),
+            travelMode: 'driving',
+            strokeColor: '#131540',
+            strokeOpacity: 0.6,
+            strokeWeight: 6
+          }
+
+         this._googleMap.drawRoute(options);
+
+          this.routeReceipt.waypoints.forEach((waypoint) => {
+            this._googleMap.addMarker({
+              lat: waypoint.lat,
+              lng: waypoint.long,
+              title: 'Charging Station'
+            });
+          })
+          // Center the map on where we're going
+          this._googleMap.setCenter(start.lat, start.long)
+       }
+     }
+   }
+
+   _toWaypoints(points : Array<Point>) {
+     var results = []
+     points.forEach((point) => {
+       var result = {
+         stopover: true,
+         location: new window['google'].maps.LatLng(point.lat, point.long),
+       }
+       results.push(result)
+     })
+     return results
+   }
 
   ngAfterViewInit() {
     this._httpService.get('assets/styles.json')
@@ -77,7 +119,7 @@ export class Map {
       not_supported: function() {
       },
       always: () => {
-        this._isFinishedLoading = true
+
       }
     });
   }

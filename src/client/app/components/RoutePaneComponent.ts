@@ -1,15 +1,19 @@
-import {Component} from 'angular2/core';
+import {Component, EventEmitter, Output} from 'angular2/core';
 import {RouteRequest} from '../models/RouteRequest'
 import {MaterialPlacesAutocomplete} from './MaterialPlacesAutocomplete';
 import {DropdownComponent} from './DropdownComponent';
+
 import {CarService} from '../services/CarService';
+import {GoogleService} from '../services/GoogleService'
+
+
 import {Car} from '../models/Car'
 import {Model} from '../models/Model'
 
 @Component({
   selector: 'pane',
   directives: [MaterialPlacesAutocomplete, DropdownComponent],
-  providers: [CarService],
+  providers: [CarService, GoogleService],
   template: `
     <div id="info-pane">
     <div class="content-wrapper center-align">
@@ -18,10 +22,10 @@ import {Model} from '../models/Model'
       <div class="row center-align">
          <form class="col s12">
            <div class="row">
-             <places-input labelText="Start" (placeChanged)="newPlace(value)" ></places-input>
-             <places-input labelText="Destination" (placeChanged)="newPlace(value)" ></places-input>
-            <dropdown [collection]="carCollection" labelText="Car Make" (optionSelected)="makeSelected($event)"></dropdown>
-            <dropdown [collection]="modelCollection" labelText="Car Model" (optionSelected)="selected($event)"></dropdown>
+             <places-input labelText="Start" (placeChanged)="placeChanged($event)" ></places-input>
+             <places-input labelText="Destination" (placeChanged)="placeChangedEnd($event)" ></places-input>
+             <dropdown [collection]="carCollection" labelText="Car Make" (optionSelected)="makeSelected($event)"></dropdown>
+             <dropdown [collection]="modelCollection" labelText="Car Model" (optionSelected)="modelSelected($event)"></dropdown>
            </div>
          </form>
          <a (click)="beginSearch()" class="waves-effect waves-light btn center">Search</a>
@@ -29,7 +33,6 @@ import {Model} from '../models/Model'
       </form>
     </div>
     </div>
-
   `
 })
 
@@ -39,7 +42,10 @@ export class Pane {
   carCollection : Array<Car> = []
   modelCollection : Array<Model> = []
 
-  constructor(public carService : CarService) {
+  // A handler for invoked search handlers
+  @Output() searchInvoked : EventEmitter<RouteRequest> = new EventEmitter()
+
+  constructor(public carService : CarService, public googleService : GoogleService) {
     // Fetch the cars
     carService.fetchAllCars((cars) => {
       this.carCollection = cars
@@ -52,7 +58,22 @@ export class Pane {
     // Now, populate the make service with the new items
     this.carService.fetchAllCarModelsForCar(carMake, (models) => {
       this.modelCollection = models
-      console.log(this.modelCollection)
+    })
+  }
+
+  modelSelected(index) {
+    this.searchRequest.selectedModel = this.modelCollection[index]
+  }
+
+  placeChanged(place) {
+    this.googleService.getPointFromAddressString(place, (point) => {
+      this.searchRequest.startingLocation = point      
+    })
+  }
+
+  placeChangedEnd(place) {
+    this.googleService.getPointFromAddressString(place, (point) => {
+      this.searchRequest.endingLocation = point
     })
   }
 
@@ -63,7 +84,7 @@ export class Pane {
   }
 
   beginSearch() {
-    console.log(this.searchRequest)
+    this.searchInvoked.emit(this.searchRequest)
   }
 
 }

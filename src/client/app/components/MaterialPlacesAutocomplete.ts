@@ -36,7 +36,8 @@ export class MaterialPlacesAutocomplete {
     this._scope = new window['google'].maps.places.Autocomplete(element.get(0), {});
     window['google'].maps.event.addListener(this._scope, 'place_changed', () => {
       // Send the update to the listener
-      this.sendUpdate(element.val())
+      var place = this._scope['getPlace']();
+      this.sendUpdate(place.formatted_address)
     });
   }
 

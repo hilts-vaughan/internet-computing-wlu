@@ -10,4 +10,16 @@ export class Point {
     this.long = long
     this.lat = lat
   }
+
+  validate() : boolean {
+    return this.long != 0 && this.lat != 0
+  }
+
+  toJSON() {
+    return {
+      long: this.long,
+      lat: this.lat
+    }
+  }
+
 }
