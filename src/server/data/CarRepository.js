@@ -17,20 +17,20 @@ class CarRepository {
    * @param  {Number} id The numeric ID that is given to the car that you want to fetch.
    * @return {[type]}    [description]
    */
-  getById(id, callback) {
-    this.connection.query('SELECT c.name, c.distance, a.ChargerId as chargerType FROM cars AS c INNER JOIN charger AS a ON a.CarId = c.CarId WHERE ID=? LIMIT 1;', [id], (error, rows) => {
-        // Only expect to get one row back per ID
-        callback(new Car(rows[0]))
+  getModelsForCarId(id, callback) {
+    this.connection.query("SELECT m.model_id, m.name, m.range_km FROM model AS m WHERE car_id =?", [id], (error, rows) => {
+      callback(rows)
     })
   }
 
-  getAllCars(callback) {    
-    this.connection.query("SELECT * FROM cars AS c INNER JOIN charger AS a ON a.CarId = c.CarId", (error, rows) => {
+  getAllCars(callback) {
+    this.connection.query("SELECT c.id, c.name FROM car AS c", (error, rows) => {
       if(error) {
+        console.log(error)
         callback(null)
         return
       }
-      callback(_rowsToCollection(rows))
+      callback(this._rowsToCollection(rows))
     })
   }
 

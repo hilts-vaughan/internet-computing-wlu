@@ -32,7 +32,18 @@ class CarRoute {
         }
       })
     })
-  }
+
+    this.server.post('/cars/model', (request, resource, next) => {
+      this.carRepo.getModelsForCarId(request.body.id, (models) => {
+          if(models != null) {
+            resource.send({models: models})
+          } else {
+            resource.send({status: 500, error: "Failure"})
+          }
+      })
+    })
+
+  } // end of route posting
 }
 
 module.exports = CarRoute
