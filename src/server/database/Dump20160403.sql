@@ -50,11 +50,11 @@ DROP TABLE IF EXISTS `charger`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `charger` (
-  `charger_id` int(11) NOT NULL AUTO_INCREMENT,
+  `charger_id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`charger_id`),
   UNIQUE KEY `charger_id_UNIQUE` (`charger_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,7 @@ CREATE TABLE `charger` (
 
 LOCK TABLES `charger` WRITE;
 /*!40000 ALTER TABLE `charger` DISABLE KEYS */;
-INSERT INTO `charger` VALUES (1,'Tesla Supercharger'),(2,'CHAdeMO'),(3,'SAE J1772 Combo');
+INSERT INTO `charger` VALUES (2,'CHAdeMO'),(27,'Tesla Supercharger'),(32,'SAE J1772 Combo');
 /*!40000 ALTER TABLE `charger` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,10 +104,9 @@ DROP TABLE IF EXISTS `model_charger`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `model_charger` (
   `model_id` int(11) NOT NULL,
-  `charger_id` int(11) DEFAULT NULL,
+  `charger_id` int(11) NOT NULL,
   PRIMARY KEY (`model_id`),
   KEY `charger_id_idx` (`charger_id`),
-  CONSTRAINT `charger_id` FOREIGN KEY (`charger_id`) REFERENCES `charger` (`charger_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `model_id` FOREIGN KEY (`model_id`) REFERENCES `model` (`model_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -118,7 +117,7 @@ CREATE TABLE `model_charger` (
 
 LOCK TABLES `model_charger` WRITE;
 /*!40000 ALTER TABLE `model_charger` DISABLE KEYS */;
-INSERT INTO `model_charger` VALUES (9,1),(10,1),(11,1),(4,2),(5,2),(6,2),(7,2),(12,2),(1,3),(2,3),(13,3);
+INSERT INTO `model_charger` VALUES (4,2),(5,2),(6,2),(7,2),(12,2),(9,27),(10,27),(11,27),(1,32),(2,32),(13,32);
 /*!40000 ALTER TABLE `model_charger` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -131,4 +130,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-02 11:30:47
+-- Dump completed on 2016-04-02 13:59:58
