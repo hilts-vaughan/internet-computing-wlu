@@ -128,7 +128,49 @@ def requestGenerator(startLatitude, startLongitude, endLatitude, endLongitude, s
 
 
 
+def main(startLatitude, startLongitude, endLatitude, endLongitude, maxDistance, supportedChargers):
+    requestList = requestGenerator(startLatitude,startLongitude,endLatitude,endLongitude, supportedChargers)
+    graph = graphGenerator(requestList,maxDistance)
+    shortestPath = dijkstra.shortestPath(graph,"start","end")
+    actualDistances = googleNodes.googleMapsActualPath(requestList, shortestPath)
+    correctPath = False
+    print(shortestPath)
 
+    while correctPath == False:
+        count = 0
+        correctPath=True
+        currentDistanceCounter = 0
+        while currentDistanceCounter<len(actualDistances):
+            if actualDistances[currentDistanceCounter]/1000>maxDistance:
+                correctPath=False
+                graph[str(shortestPath[currentDistanceCounter])].pop(str(shortestPath[currentDistanceCounter+1]),None)
+            else:
+                graph[str(shortestPath[currentDistanceCounter])][str(shortestPath[currentDistanceCounter+1])]=actualDistances[currentDistanceCounter]/1000
+            currentDistanceCounter+=1
+
+        print(graph)
+        shortestPath = dijkstra.shortestPath(graph,"start","end")
+        print("shortestPath {}".format(shortestPath))
+        if shortestPath == None or None in shortestPath or count>50:
+            print(count)
+            break
+        else:
+            actualDistances=googleNodes.googleMapsActualPath(requestList,shortestPath)
+        print("actual distances {}".format(actualDistances))
+        count+=1
+    print(actualDistances)
+    print(shortestPath)
+    if shortestPath==None:
+        return None
+    waypoints = []
+    waypoints.append([requestList[0][0],requestList[0][1]])
+    for point in shortestPath:
+        if point != "start" and point != "end":
+            waypoints.append([requestList[int(point)+1][0],requestList[int(point)+1][1]])
+            print(requestList[int(point)+1])
+    waypoints.append([requestList[1][0],requestList[1][1]])
+    print(waypoints)
+    return waypoints
 #current Inputs
 startLatitude = 39.5
 startLongitude = -121.9
@@ -136,35 +178,5 @@ endLatitude = 40
 endLongitude = -121
 maxDistance = 100
 supportedChargers = ['27']
-requestList = requestGenerator(startLatitude,startLongitude,endLatitude,endLongitude, supportedChargers)
-graph = graphGenerator(requestList,maxDistance)
-shortestPath = dijkstra.shortestPath(graph,"start","end")
-actualDistances = googleNodes.googleMapsActualPath(requestList, shortestPath)
-correctPath = False
-print(shortestPath)
-
-while correctPath == False:
-    count = 0
-    correctPath=True
-    currentDistanceCounter = 0
-    while currentDistanceCounter<len(actualDistances):
-        if actualDistances[currentDistanceCounter]/1000>maxDistance:
-            correctPath=False
-            graph[str(shortestPath[currentDistanceCounter])].pop(str(shortestPath[currentDistanceCounter+1]),None)
-        else:
-            graph[str(shortestPath[currentDistanceCounter])][str(shortestPath[currentDistanceCounter+1])]=actualDistances[currentDistanceCounter]/1000
-        currentDistanceCounter+=1
-
-    print(graph)
-    shortestPath = dijkstra.shortestPath(graph,"start","end")
-    print("shortestPath {}".format(shortestPath))
-    if shortestPath == None or None in shortestPath or count>50:
-        print(count)
-        break
-    else:
-        actualDistances=googleNodes.googleMapsActualPath(requestList,shortestPath)
-    print("actual distances {}".format(actualDistances))
-    count+=1
-print(actualDistances)
-print(shortestPath)
+waypoints = main(startLatitude,startLongitude,endLatitude,endLongitude,maxDistance,supportedChargers)
 #https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=longtitude,latitude&destinations=40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626%7C40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626&key=YOUR_API_KEY
