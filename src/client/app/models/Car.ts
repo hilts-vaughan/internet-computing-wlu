@@ -18,4 +18,8 @@ export class Car {
     return this._name;
   }
 
+  toString() {
+    return this._name
+  }
+
 }

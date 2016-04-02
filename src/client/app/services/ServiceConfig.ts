@@ -3,7 +3,7 @@ export class ServiceConfig {
    * A static location to the server API endpoint
    * @type {String}
    */
-  static SERVER_URL = "localhost:2740"
+  static SERVER_URL = "http://localhost:8080"
 
   /**
    * The API key; this should be kept a secret usually, but we're fine here

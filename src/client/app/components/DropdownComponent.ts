@@ -30,20 +30,24 @@ export class DropdownComponent {
 
   // Private rendering methods down below, trying to avoid anything crazy
   ngAfterViewInit() {
-    var rawElement : Element = this.elementRef.nativeElement
-    var element : any = window['$'](rawElement).find('select')
-
     // Invoke the material select life on it
-    element.material_select()
     this._bind()
   }
 
   ngOnChanges() {
-    // this._bind()
+    this._bind()
   }
 
   _bind() {
     var rawElement : Element = this.elementRef.nativeElement
+    var element : any = window['$'](rawElement).find('select')
+
+    // This hack is required since there's no guarentee that the options
+    // will have been updated in time for the list to be changed
+    window.setTimeout(() => {
+      element.material_select()
+    }, 500)
+
     window['$'](rawElement).find("span").click((event : any) => {
       var index : number = window['$'](event.target).parent().index()
       if(index > 0) {
