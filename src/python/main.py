@@ -31,34 +31,24 @@ def distanceCalculator(startLatitude,startLongitude,endLatitude,endLongitude):
     return distance
 
 
-# inputs
+def checkValidThree(chargerNames, supportedChargers):
 
-def requestGenerator(startLatitude, startLongitude, endLatitude, endLongitude, maxDistance):
-    start = "start"
-    end = "end"
+    currentSupportedIndex = 0
+    while currentSupportedIndex<len(chargerNames):
+        if(chargerNames[currentSupportedIndex] in supportedChargers):
+            return True
+        currentSupportedIndex +=1
 
+    return False
 
-    #starting values
-    # approximate radius of earth in km
-
-    requestList = []
-    requestList.append([startLatitude, startLongitude, start])
-    requestList.append([endLatitude, endLongitude, end])
-
-
-
-    distance = distanceCalculator(startLatitude,startLongitude,endLatitude,endLongitude)
-    print(distance)
-
-
+def jsonFetch(distance, midLat, midLong):
     url = 'http://api.openchargemap.io/v2/poi/'
-    payload = {'output': 'json', 'distanceunit': 'KM', 'distance': str(distance), 'latitude': str(startLatitude), 'longitude': str(startLongitude)}
-    print(payload)
+    payload = {'output': 'json', 'distanceunit': 'KM', 'distance': str(distance), 'latitude': str(midLat), 'longitude': str(midLong)}
     r = requests.get(url, params=payload)
-    data = json.loads(r.text)
-    #first loop for close to start
+    return json.loads(r.text)
 
-    x = 1
+def jsonParsingIntoRequestList(requestList, data, startindex):
+    x=startindex
     for point in data:
         lat = point['AddressInfo']['Latitude']
         long = point['AddressInfo']['Longitude']
@@ -67,38 +57,39 @@ def requestGenerator(startLatitude, startLongitude, endLatitude, endLongitude, m
         if (temp not in requestList):
             requestList.append([lat, long, str(x)])
             x=x+1
+    return x, requestList
 
-    payload = {'output': 'json', 'distanceunit': 'KM', 'distance': str(distance), 'latitude': str(endLatitude), 'longitude':str(endLongitude)}
-    r = requests.get(url, params=payload)
-    data = json.loads(r.text)
-    for point in data:
-        lat = point['AddressInfo']['Latitude']
-        long = point['AddressInfo']['Longitude']
-        tempAddress = point['AddressInfo']['AddressLine1']
-        temp = [lat, long, tempAddress]
-        if (temp not in requestList):
-            requestList.append([lat, long, str(x)])
-            x=x+1
-
-    graph ={}
-    graph_index = 0
+def graphGenerator(requestList, maxDistance):
+    graph = {}
     for x in requestList:
-        lat1 = radians(x[0])
-        lon1 = radians(x[1])
-        first = 0
-        #print(lat1)
-        #print(lon1)
         temp_graph = {}
         for y in requestList:
             if (x[2]!=y[2]):
                 distance = distanceCalculator(x[0],x[1],y[0],y[1])
-                if (distance<maxDistance):
+                if (distance<maxDistance/2):
                     temp_graph[y[2]]=distance
-
         if (len(temp_graph)!=0):
             graph[x[2]]=temp_graph
-    print(graph)
-    return requestList, graph, (dijkstra.shortestPath(graph,start,end))
+    return graph
+def requestGenerator(startLatitude, startLongitude, endLatitude, endLongitude):
+    start = "start"
+    end = "end"
+
+
+    requestList = []
+    requestList.append([startLatitude, startLongitude, start])
+    requestList.append([endLatitude, endLongitude, end])
+    distance = distanceCalculator(startLatitude,startLongitude,endLatitude,endLongitude)
+
+    #generate datapoints for start index
+    data = jsonFetch(distance, startLatitude, startLongitude)
+    x, requestList = jsonParsingIntoRequestList(requestList,data,1)
+
+    #generate datapoints for end index
+    data = jsonFetch(distance, endLatitude, endLongitude)
+    x, requestList = jsonParsingIntoRequestList(requestList,data,x)
+
+    return requestList
 
 
 
@@ -109,10 +100,13 @@ startLongitude = -121.9
 endLatitude = 40
 endLongitude = -121
 maxDistance = 100
-requestList, graph, shortestPath = requestGenerator(startLatitude,startLongitude,endLatitude,endLongitude,maxDistance)
+requestList = requestGenerator(startLatitude,startLongitude,endLatitude,endLongitude)
+graph = graphGenerator(requestList,maxDistance)
+shortestPath = dijkstra.shortestPath(graph,"start","end")
 actualDistances = googleNodes.googleMapsActualPath(requestList, shortestPath)
 correctPath = False
 print(shortestPath)
+
 while correctPath == False:
     count = 0
     correctPath=True
