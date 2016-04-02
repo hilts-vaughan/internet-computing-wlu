@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `electric_car` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `electric_car`;
 -- MySQL dump 10.13  Distrib 5.6.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: electric_car
@@ -129,4 +131,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-01 22:12:15
+-- Dump completed on 2016-04-02 11:30:47
