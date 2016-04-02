@@ -47,9 +47,15 @@ def jsonFetch(distance, midLat, midLong):
     r = requests.get(url, params=payload)
     return json.loads(r.text)
 
-def jsonParsingIntoRequestList(requestList, data, startindex):
+
+def jsonParsingIntoRequestList(requestList, data, startindex, suppportedChargers):
+
+    count = 0
     x=startindex
     for point in data:
+
+        '''
+        #simplistic working version
         lat = point['AddressInfo']['Latitude']
         long = point['AddressInfo']['Longitude']
         tempAddress = point['AddressInfo']['AddressLine1']
@@ -57,6 +63,35 @@ def jsonParsingIntoRequestList(requestList, data, startindex):
         if (temp not in requestList):
             requestList.append([lat, long, str(x)])
             x=x+1
+        '''
+        chargerList = []
+        chargerIDList = []
+        lat = point['AddressInfo']['Latitude']
+        long = point['AddressInfo']['Longitude']
+        tempAddress = point['AddressInfo']['AddressLine1']
+        temp = [lat, long, tempAddress]
+
+        for chargerType in point['Connections']:
+            if (chargerType['Level']!=None and 'ID' in chargerType['Level']):
+                chargerList.append(chargerType['Level']['ID'])
+            else:
+                chargerList.append(None)
+            if (chargerType['ConnectionType']!=None and 'ID' in chargerType['ConnectionType']):
+                chargerIDList.append(str(chargerType['ConnectionType']['ID']))
+
+        if (temp not in requestList and (1 in chargerList or 2 in chargerList or None in chargerList)):
+            if None in chargerList:
+                count+=1
+                print("So far {}:".format(count))
+                print(chargerType)
+            requestList.append([lat, long, str(x)])
+            x=x+1
+
+        elif ((3 in chargerList)):
+            found=checkValidThree(chargerIDList,suppportedChargers)
+            if found:
+                requestList.append([lat, long, str(x)])
+
     return x, requestList
 
 def graphGenerator(requestList, maxDistance):
@@ -71,7 +106,7 @@ def graphGenerator(requestList, maxDistance):
         if (len(temp_graph)!=0):
             graph[x[2]]=temp_graph
     return graph
-def requestGenerator(startLatitude, startLongitude, endLatitude, endLongitude):
+def requestGenerator(startLatitude, startLongitude, endLatitude, endLongitude, suppportedChargers):
     start = "start"
     end = "end"
 
@@ -83,11 +118,11 @@ def requestGenerator(startLatitude, startLongitude, endLatitude, endLongitude):
 
     #generate datapoints for start index
     data = jsonFetch(distance, startLatitude, startLongitude)
-    x, requestList = jsonParsingIntoRequestList(requestList,data,1)
+    x, requestList = jsonParsingIntoRequestList(requestList,data,1, suppportedChargers)
 
     #generate datapoints for end index
     data = jsonFetch(distance, endLatitude, endLongitude)
-    x, requestList = jsonParsingIntoRequestList(requestList,data,x)
+    x, requestList = jsonParsingIntoRequestList(requestList,data,x, suppportedChargers)
 
     return requestList
 
@@ -100,7 +135,8 @@ startLongitude = -121.9
 endLatitude = 40
 endLongitude = -121
 maxDistance = 100
-requestList = requestGenerator(startLatitude,startLongitude,endLatitude,endLongitude)
+supportedChargers = ['27']
+requestList = requestGenerator(startLatitude,startLongitude,endLatitude,endLongitude, supportedChargers)
 graph = graphGenerator(requestList,maxDistance)
 shortestPath = dijkstra.shortestPath(graph,"start","end")
 actualDistances = googleNodes.googleMapsActualPath(requestList, shortestPath)
