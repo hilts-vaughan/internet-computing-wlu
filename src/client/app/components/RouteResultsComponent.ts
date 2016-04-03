@@ -21,6 +21,7 @@ import {RouteReceipt} from '../models/RouteReceipt'
             <p>{{result[0]}}<br>
             </p>
           </li>
+          <a style="margin-top: 8px" *ngIf="routeReceipt != null" (click)="exportResults()" class="waves-effect waves-light btn center">Export Route</a>
         </ul>
         </div>
       </div>
@@ -35,4 +36,16 @@ export class RouteResultsComponent {
   constructor(public elementRef: ElementRef, public renderer: Renderer) {
 
   }
+
+  exportResults() {
+    var BASE_URL = "https://www.google.ca/maps/dir/";
+    var sBuffer = ""
+    this.routeReceipt.all.forEach((point) => {
+      sBuffer += point.toString()
+    })
+
+    // Open the results
+    window.open(BASE_URL + sBuffer.substring(1, sBuffer.length))
+  }
+
 }

@@ -29,6 +29,17 @@ import {Point} from './models/Point'
         </map>
       </div>
     </div>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <h4 id="modal-title">Modal Header</h4>
+        <p id="modal-text">A bunch of text</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-grey btn-flat">OK</a>
+      </div>
+    </div>
     `
 })
 
@@ -41,12 +52,19 @@ export class AppComponent {
 
   }
 
+  showModal(title : string, text : string) {
+    var $ = window['$']
+    $('#modal-title').text(title)
+    $('#modal-text').text(text)
+    $('#modal1').openModal();
+  }
+
   beginSearch(request : RouteRequest) {
 
     var isValid = request.validate()
     // TODO: Spawn a proper modal to make things look less shitty
     if(!isValid) {
-      alert("Please ensure all fields are filled in")
+      this.showModal("Error", "Please be sure to fill in all the fields.")
       return
     }
 
@@ -55,7 +73,7 @@ export class AppComponent {
       if(receipt != null) {
         this._receipt = receipt
       } else {
-        alert("No route could be found.")
+        this.showModal("Error", "No route could be found. It's likely your range is too far or there are not enough charging stations.")
       }
       this._search = false
     })
