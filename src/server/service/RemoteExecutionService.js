@@ -1,20 +1,21 @@
 'use strict'
 
-var assert = require('chat').assert
+var assert = require('chai').assert
 var zerorpc = require("zerorpc");
 var config = require('config')
+var util = require('util')
 
 /**
  * Offers a way to fetch results from a remote server. Uses a ZeroMQ backend
  * with a zeroRPC library for the remote execution.
  */
 class RemoteExecutionService {
-  constructor(serviceContext) {
-    this.client = new zerorpc.Client();
+  constructor() {
+    this.client = new zerorpc.Client({ timeout: 60, heartbeatInterval: 60000 });
 
     var workerConfig = config.get('workers')
     var SERVER_URL = util.format('tcp://%s:%s', workerConfig.host, workerConfig.port)
-    client.connect(SERVER_URL);
+    this.client.connect(SERVER_URL);
   }
 
   /**
@@ -28,7 +29,7 @@ class RemoteExecutionService {
     assert.isNotNull(this.client)
     assert.isObject(params)
 
-    this.invoke(methodName, JSON.stringify(params), function(error, result) {
+    this.client.invoke(methodName, JSON.stringify(params), function(error, result) {
       if(error) {
         throw error
       }
@@ -36,6 +37,7 @@ class RemoteExecutionService {
       var returnResult = JSON.parse(result)
       callback(returnResult)
     });
+
   }
 }
 

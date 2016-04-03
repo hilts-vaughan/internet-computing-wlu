@@ -51,7 +51,7 @@ export class AppComponent {
 
     this.searchService.performSearchWithRequest(request, (receipt) => {
       // TODO: Feed something into the map for AngularJS
-      this._receipt = new RouteReceipt([request.startingLocation, new Point(-80.445513, 43.420610) ,request.endingLocation])
+      this._receipt = receipt
     })
   }
 

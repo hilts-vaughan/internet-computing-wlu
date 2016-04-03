@@ -17,9 +17,37 @@ class CarRepository {
    * @param  {Number} id The numeric ID that is given to the car that you want to fetch.
    * @return {[type]}    [description]
    */
-  getModelsForCarId(id, callback) {  
+  getModelsForCarId(id, callback) {
     this.connection.query("SELECT m.model_id, m.name, m.range_km, m.year FROM model AS m WHERE car_id =?", [id], (error, rows) => {
       callback(rows)
+    })
+  }
+
+  /**
+   * Fetches a specific model ID from server and fetches the range
+   * @param  {[type]}   id       [description]
+   * @param  {Function} callback [description]
+   * @return {[type]}            [description]
+   */
+  getModelById(id, callback) {
+    console.log(id)
+    this.connection.query("SELECT m.range_km FROM model AS m WHERE model_id =?", [id], (error, rows) => {
+      this.connection.query("SELECT charger_id FROM model_charger WHERE model_id=?", [id], (error, chargerRows) => {
+        // Build charger types
+        var chargerList = []
+        chargerRows.forEach((charger) => {
+            chargerList.push(charger.charger_id)
+        })
+
+        // Now build the object completely
+        var result = {
+          chargerTypes: chargerList,
+          distance: rows[0].range_km
+        }
+
+        // Get the model object
+        callback(result)
+      })
     })
   }
 

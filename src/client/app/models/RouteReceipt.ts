@@ -1,9 +1,11 @@
 import {Point} from './Point'
 
 export class RouteReceipt {
-  private _points : Array<Point>
-  constructor(points : Array<Point>) {
-    this._points = points
+  private _points : Array<Point> = []
+  constructor(results : any) {
+    results.forEach((result) => {
+      this._points.push(new Point(result[1], result[0]))
+    })    
   }
 
   get waypoints() : Array<Point> {

@@ -38,6 +38,8 @@ export class Map {
      if(changes['routeReceipt']) {
        if(this.routeReceipt != null) {
          this._googleMap.cleanRoute()
+         this._googleMap.removeMarkers()
+
          var start = this.routeReceipt.first
          var end = this.routeReceipt.last
 
@@ -68,7 +70,7 @@ export class Map {
               lat: point.lat,
               lng: point.long,
               title: 'Location'
-            });            
+            });
           })
 
           // Center the map on where we're going
@@ -84,12 +86,17 @@ export class Map {
 
    _toWaypoints(points : Array<Point>) {
      var results = []
+     var x = 0
+     var shortEnough = points.length < 9
      points.forEach((point) => {
-       var result = {
-         stopover: true,
-         location: new window['google'].maps.LatLng(point.lat, point.long),
+       if(shortEnough || x % 2 == 0) {
+         var result = {
+           stopover: true,
+           location: new window['google'].maps.LatLng(point.lat, point.long),
+         }
+         results.push(result)
        }
-       results.push(result)
+       x++
      })
      return results
    }

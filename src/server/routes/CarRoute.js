@@ -1,6 +1,8 @@
 'use strict'
 
 var CarRepository = require('../data/CarRepository')
+var MapRouteService = require('../service/MapRouteService')
+var RemoteExecutionService = require('../service/RemoteExecutionService')
 var pool = require('../data/DatabasePool')
 
 class CarRoute {
@@ -16,6 +18,7 @@ class CarRoute {
         return
       }
       this.carRepo = new CarRepository(connection)
+      this.mapService = new MapRouteService(new RemoteExecutionService())
     })
   }
 
@@ -33,13 +36,28 @@ class CarRoute {
       })
     })
 
-    this.server.post('/cars/model', (request, resource, next) => {      
+    this.server.post('/cars/model', (request, resource, next) => {
       this.carRepo.getModelsForCarId(request.body.id, (models) => {
           if(models != null) {
             resource.send({models: models})
           } else {
             resource.send({status: 500, error: "Failure"})
           }
+      })
+    })
+
+    this.server.post('/route/search', (request, resource, next) => {
+      this.carRepo.getModelById(request.body.modelId, (model) => {
+        var searchRequest = Object.assign(model, request.body)
+        this.mapService.getPossibleRoute(searchRequest, (result) => {
+          if(result) {
+            resource.send(result)
+          }
+          else {
+            // Hack the waypoints :D
+            resource.send({waypoints: null})
+          }
+        })
       })
     })
 

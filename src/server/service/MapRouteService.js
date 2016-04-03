@@ -11,7 +11,7 @@ class MapRouteService {
 
   getPossibleRoute(options, callback) {
     // This is just a wrapper around the remote worker that does this logic
-    this._remoteService.invokeAsyncJsonMethod('getPossibleRoute', options, (result) => {
+    this._remoteService.invokeAsyncJsonMethod('getPossibleRoute', options, (result) => {      
       callback(result)
     })
   }
