@@ -7,7 +7,7 @@ def googleMapsActualPath(positionList,path):
     actualDistances = []
     if None not in path and len(path)>2:
         pathIndex = 1
-
+        print("preforming API calls")
         url="https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" +str(positionList[0][0])+","+str(positionList[0][1])+"&destinations="+str(positionList[int(path[pathIndex])+1][0])+"%2C"+str(positionList[int(path[pathIndex])+1][1])+"&key=AIzaSyB-hn6btafEpxn9e74C9Djkv7fzLwzpYh4"
         print(url)
         r = requests.get(url,None)
@@ -25,6 +25,7 @@ def googleMapsActualPath(positionList,path):
         data = json.loads(r.text)
         actualDistances.append(data['rows'][0]['elements'][0]['distance']['value'])
     elif len(path)==2:
+        print("preforming API call")
         url="https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" +str(positionList[0][0])+","+str(positionList[0][1])+"&destinations="+str(positionList[1][0])+"%2C"+str(positionList[1][1])+"&key=AIzaSyB-hn6btafEpxn9e74C9Djkv7fzLwzpYh4"
         print(url)
         r = requests.get(url,None)
