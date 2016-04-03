@@ -20,16 +20,16 @@ Implementation:
 6. System design (robust,efficiency)[20/25/]
 	
 Documentation:	
-1. Organization						[/5/]
-2. Clarity 							[/5/]
-3. Details 							[/5/]
-4. Writing of the documentation		[/5/]
+1. Organization						[5/5/]
+2. Clarity 							[5/5/]
+3. Details 							[5/5/]
+4. Writing of the documentation		[5/5/]
 	
 Presentation:	
 1. Project description 				[5/5/]
-2. Project case demo 				[/5/]
-3. Interesting/smooth 				[/5/]
+2. Project case demo 				[5/5/]
+3. Interesting/smooth 				[5/5/]
 4. Team work 						[5/5/]
 
-Total: 	[/300/]
+Total: 	[288/300/]
 
