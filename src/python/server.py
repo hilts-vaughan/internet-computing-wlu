@@ -1,5 +1,6 @@
 import zerorpc
 import json
+import main
 
 class routeData():
     def __init__(self, startLat, startLong, endLat, endLong, distance, chargerTypes):
@@ -10,13 +11,17 @@ class routeData():
 
 class routeRPC(object):
     def getPossibleRoute(self, object):
+        print("Calling getPossibleRoute... \n")
         obj = json.loads(object)
         sampleRoute = routeData(obj['start']['lat'], obj['start']['long'], obj['end']['lat'], obj['end']['long'], obj['distance'], obj['chargerTypes'])
-        return json.dumps(sampleRoute.__dict__)
+        JSONresult = main.main(sampleRoute.start[0], sampleRoute.start[1], sampleRoute.end[0], sampleRoute.end[1], sampleROute.distance, chargerTypes)
+        print("getPossibleRoute returned: " + json.dumps(JSONresult) + "\n")
+        return json.dumps(JSONresult)
 
 s = zerorpc.Server(routeRPC())
 s.bind("tcp://0.0.0.0:4242")
 s.run()
+print("Server running... \n")
 
 #test stuff
 #JSONtest = '{"start":{"lat":99,"long":0},"end":{"lat":10,"long":5},"distance": 50, "chargerTypes": [1, 2]}'
