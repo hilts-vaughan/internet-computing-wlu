@@ -43,7 +43,7 @@ def checkValidThree(chargerNames, supportedChargers):
 
 def jsonFetch(distance, midLat, midLong):
     url = 'http://api.openchargemap.io/v2/poi/'
-    payload = {'output': 'json', 'distanceunit': 'KM', 'distance': str(distance), 'latitude': str(midLat), 'longitude': str(midLong)}
+    payload = {'output': 'json', 'distanceunit': 'KM', 'distance': str(distance), 'latitude': str(midLat), 'longitude': str(midLong), "maxresults": '500'}
     r = requests.get(url, params=payload)
     return json.loads(r.text)
 
@@ -144,7 +144,8 @@ def main(startLatitude, startLongitude, endLatitude, endLongitude, maxDistance, 
         shortestPath = dijkstra.shortestPath(graph,"start","end")
         #print("shortestPath {}".format(shortestPath))
         if shortestPath == None or None in shortestPath or count>50:
-            print("too many trimming iterations")
+            if count>50:
+                print("too many trimming iterations")
             print(shortestPath)
             return None
             break
