@@ -1,3 +1,3 @@
 # internet-computing-wlu
 
-Something something electric car project. :)
+Something something electric car project. :(
