@@ -89,7 +89,7 @@ def graphGenerator(requestList, maxDistance):
         for y in requestList:
             if (x[2]!=y[2]):
                 distance = distanceCalculator(x[0],x[1],y[0],y[1])
-                if (distance<maxDistance/2):
+                if (distance<maxDistance/1.5):
                     temp_graph[y[2]]=distance
                     print("added connection from {} to {} with distance {}km".format(x[2],y[2],distance))
 
