@@ -12,6 +12,7 @@ class routeData():
 class routeRPC(object):
     def getPossibleRoute(self, object):
         print("Calling getPossibleRoute... \n")
+        print(object)
         obj = json.loads(object)
         sampleRoute = routeData(obj['start']['lat'], obj['start']['long'], obj['end']['lat'], obj['end']['long'], obj['distance'], obj['chargerTypes'])
         JSONresult = main.main(sampleRoute.start[0], sampleRoute.start[1], sampleRoute.end[0], sampleRoute.end[1], sampleRoute.distance, sampleRoute.chargerTypes)
