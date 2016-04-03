@@ -19,7 +19,11 @@ export class SearchService {
 
       this.http.post(ServiceConfig.SERVER_URL + "/route/search", "", {headers: headers, body: params}).map(res => res.json()).subscribe(
         data => {
-            callback(new RouteReceipt(data.Waypoints))
+            if(data.Waypoints != null) {
+              callback(new RouteReceipt(data.Waypoints))
+            } else {
+              callback(null)
+            }
         },
         error => {
           callback(null)

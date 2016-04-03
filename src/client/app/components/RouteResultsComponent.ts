@@ -4,6 +4,7 @@
  */
 
 import {Component, Output, Input, EventEmitter, ElementRef, Renderer} from 'angular2/core';
+import {RouteReceipt} from '../models/RouteReceipt'
 
 @Component({
     selector: 'route-results',
@@ -14,10 +15,10 @@ import {Component, Output, Input, EventEmitter, ElementRef, Renderer} from 'angu
       <div id="route-results">
         <div class="content-wrapper">
         <ul class="collection grey darken-3" style="border: none !important;">
-          <li *ngFor="#result of results" class="collection-item avatar grey darken-3" style="border-bottom: 1px dashed lightgray !important;">
+          <li *ngFor="#result of routeReceipt?.waypointNames" class="collection-item avatar grey darken-3" style="border-bottom: 1px dashed lightgray !important;">
             <img src="img/marker.png" alt="" class="circle">
-            <span class="title">{{result}}</span>
-            <p>786 Elgin Street North, Cambridge, ON<br>
+            <span class="title">{{result[1]}}</span>
+            <p>{{result[0]}}<br>
             </p>
           </li>
         </ul>
@@ -28,7 +29,9 @@ import {Component, Output, Input, EventEmitter, ElementRef, Renderer} from 'angu
 })
 
 export class RouteResultsComponent {
-  results : Array<String> = ["Everything Is Awesome", "Charging Station #2", "Charging Station #3", "Fu Exception", "Elemental Eradicate"]
+
+  @Input() routeReceipt : RouteReceipt = null
+
   constructor(public elementRef: ElementRef, public renderer: Renderer) {
 
   }

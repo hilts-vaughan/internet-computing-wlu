@@ -21,8 +21,8 @@ import {Point} from './models/Point'
     <!-- Page Layout here -->
     <div class="row">
       <div class="full-height col s12 m5 l3 grey darken-3">
-        <pane (searchInvoked)="beginSearch($event)"></pane>
-        <route-results></route-results>
+        <pane [search]="_search" (searchInvoked)="beginSearch($event)"></pane>
+        <route-results [routeReceipt]="_receipt"></route-results>
       </div>
       <div class="full-height col s12 m7 l9 grey darken-4">
         <map [routeReceipt]="_receipt">
@@ -35,6 +35,7 @@ import {Point} from './models/Point'
 export class AppComponent {
   // Can probably feed some waypoint data into it and force a change, but for now...
   private _receipt : RouteReceipt
+  private _search : boolean = false
 
   constructor(public searchService : SearchService) {
 
@@ -49,10 +50,14 @@ export class AppComponent {
       return
     }
 
+    this._search = true
     this.searchService.performSearchWithRequest(request, (receipt) => {
-      // TODO: Feed something into the map for AngularJS
-      this._receipt = receipt
+      if(receipt != null) {
+        this._receipt = receipt
+      } else {
+        alert("No route could be found.")
+      }
+      this._search = false
     })
   }
-
 }
