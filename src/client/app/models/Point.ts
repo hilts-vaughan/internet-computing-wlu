@@ -22,4 +22,8 @@ export class Point {
     }
   }
 
+  toString() {
+    return "/'" + this.lat + "," + this.long + "'"
+  }
+
 }

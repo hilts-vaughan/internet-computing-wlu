@@ -31,7 +31,7 @@ export class RouteReceipt {
     Slices the way point names
    */
   get waypointNames() : Array<[String]> {
-    return this._info.slice(1, this._points.length - 1)
+    return this._info.slice(1, this._points.length - 1)    
   }
 
 }
