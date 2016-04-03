@@ -181,9 +181,7 @@ def main(startLatitude, startLongitude, endLatitude, endLongitude, maxDistance, 
     #print(waypoints)
     waypoints = {}
     waypoints['Waypoints']=waypointsData
-    jsonWaypoints = json.dumps(waypoints)
-    print(jsonWaypoints)
-    return jsonWaypoints
+    return waypoints
 
 
 #current Inputs
