@@ -19,12 +19,12 @@ import {Point} from './models/Point'
     providers: [SearchService],
     template: `
     <!-- Page Layout here -->
-    <div class="row">
-      <div class="full-height col s12 m5 l3 grey darken-3">
+    <div class="row grey darken-3">
+      <div class="col s12 m5 l3 grey darken-3">
         <pane [search]="_search" (searchInvoked)="beginSearch($event)"></pane>
         <route-results [routeReceipt]="_receipt"></route-results>
       </div>
-      <div class="full-height col s12 m7 l9 grey darken-4">
+      <div class="full-height col s12 m7 l9 grey darken-3" style="overflow-y: hidden">
         <map [routeReceipt]="_receipt">
         </map>
       </div>

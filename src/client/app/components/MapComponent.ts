@@ -12,7 +12,7 @@ import {Point} from '../models/Point'
   selector: 'map',
   providers: [HTTP_BINDINGS],
   template: `
-    <div class="map-wrapper">
+    <div class="map-wrapper grey darken-2">
       <div id="map">
         <b>Your browser does not support Javascript.</b>
       </div>
