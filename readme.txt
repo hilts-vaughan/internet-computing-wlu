@@ -2,7 +2,7 @@ CP476 Project
 Project title: EV-Go
 Names of team members: Vaughan Hilts, Giovanni Romano, Brandon Smith
 Statement: I claim that the enclosed submission is the work of the team members [Yes]
-Project URL: ????? // INSERT ME
+Project URL: http://vaughanhilts.me/electric/index.html#
 
 Project marking grid:
 Proposal:	
